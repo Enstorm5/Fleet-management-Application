@@ -21,4 +21,8 @@ public class CrewService {
     public Crew updateCrew(Crew crew){
         return crewRepository.save(crew);
     }
+
+    public Crew deleteCrew(int id){
+        return null;
+    }
 }
