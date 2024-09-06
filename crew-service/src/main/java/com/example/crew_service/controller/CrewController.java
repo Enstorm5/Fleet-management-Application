@@ -1,7 +1,7 @@
-package com.example.crew.controller;
+package com.example.crew_service.controller;
 
-import com.example.crew.data.Crew;
-import com.example.crew.service.CrewService;
+import com.example.crew_service.data.Crew;
+import com.example.crew_service.service.CrewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

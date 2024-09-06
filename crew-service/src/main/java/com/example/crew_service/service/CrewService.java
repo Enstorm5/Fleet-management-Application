@@ -1,7 +1,7 @@
-package com.example.crew.service;
+package com.example.crew_service.service;
 
-import com.example.crew.data.Crew;
-import com.example.crew.data.CrewRepository;
+import com.example.crew_service.data.Crew;
+import com.example.crew_service.data.CrewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

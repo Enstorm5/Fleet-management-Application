@@ -1,4 +1,4 @@
-package com.example.crew.data;
+package com.example.crew_service.data;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

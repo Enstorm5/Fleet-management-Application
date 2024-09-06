@@ -1,8 +1,7 @@
-package com.example.crew.data;
+package com.example.crew_service.data;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
 @Entity
 @Table(name="crew")
 
