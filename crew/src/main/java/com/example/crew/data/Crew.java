@@ -15,6 +15,8 @@ public class Crew {
     String name;
     @Column(name="role")
     String role;
+    @Column(name="ship_id")
+    int ship_id;
 
     public int getId() {
         return id;
@@ -47,18 +49,4 @@ public class Crew {
     public void setShip_id(int ship_id) {
         this.ship_id = ship_id;
     }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @Column(name="ship_id")
-    int ship_id;
-    @Column(name="created_at")
-    LocalDateTime createdAt;
-
 }

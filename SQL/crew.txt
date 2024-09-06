@@ -1,0 +1,11 @@
+CREATE DATABASE crew;
+
+USE crew;
+
+CREATE TABLE crew (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    role VARCHAR(50),
+    ship_id BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+);

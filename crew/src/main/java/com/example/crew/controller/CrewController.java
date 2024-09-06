@@ -4,10 +4,10 @@ import com.example.crew.data.Crew;
 import com.example.crew.service.CrewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8005")
 
 public class CrewController {
     @Autowired

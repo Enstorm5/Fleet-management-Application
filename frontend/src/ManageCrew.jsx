@@ -110,7 +110,7 @@ const ManageCrew = ({ open, onClose }) => {
                 <List>
                   {crews.map((crew) => (
                     <ListItem key={crew.id} button onClick={() => handleCrewSelect(crew)}>
-                      <ListItemText primary={crew.name} secondary={`Role: ${crew.role} | Ship ID: ${crew.ship_id} | Crew ID: ${crew.id}`} />
+                      <ListItemText primary={crew.name} secondary={`Role: ${crew.role} | Ship ID: ${crew.ship_id} | Crew ID: ${crew.id} `} />
                     </ListItem>
                   ))}
                 </List>
@@ -140,6 +140,7 @@ const ManageCrew = ({ open, onClose }) => {
                       <MenuItem value="First Mate">First Mate</MenuItem>
                       <MenuItem value="Engineer">Engineer</MenuItem>
                       <MenuItem value="Deck Hand">Deck Hand</MenuItem>
+                      <MenuItem value="Deck Hand">Medic</MenuItem>
                     </Select>
                   </FormControl>
                   <TextField

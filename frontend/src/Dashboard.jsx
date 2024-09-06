@@ -178,7 +178,7 @@ const Dashboard = () => {
                       </ListItemAvatar>
                       <ListItemText
                         primary={crew.name}
-                        secondary={`Role: ${crew.role} | Ship ID: ${crew.ship_id}`}
+                        secondary={`Role: ${crew.role} | Ship ID: ${crew.ship_id} | Crew ID: ${crew.id}`}
                       />
                     </ListItem>
                   ))}
