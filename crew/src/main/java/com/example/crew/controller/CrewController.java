@@ -25,6 +25,11 @@ public class CrewController {
     public Crew updateCrew(@RequestBody Crew crew) {
         return crewService.updateCrew(crew);
     }
+    @DeleteMapping(path ="/crews/{id}")
+    public Crew deleteCrewById(@PathVariable int id){
+        return crewService.deleteCrewById(id);
+    }
+
 
 
 }
