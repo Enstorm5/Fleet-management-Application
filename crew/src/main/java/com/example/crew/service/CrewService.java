@@ -30,4 +30,8 @@ public class CrewService {
         }
         return null;
     }
+    public List<Crew>findCrewByName(String name){
+        return crewRepository.findCrewByName(name);
+    }
+
 }

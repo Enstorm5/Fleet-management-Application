@@ -29,6 +29,10 @@ public class CrewController {
     public Crew deleteCrewById(@PathVariable int id){
         return crewService.deleteCrewById(id);
     }
+    @GetMapping(path="/crews",params = "name")
+    public List<Crew>findCrewByName(@RequestParam String name){
+        return crewService.findCrewByName(name);
+    }
 
 
 
