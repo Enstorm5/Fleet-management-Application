@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8005")
@@ -30,12 +31,16 @@ public class CaptainController {
     public Captain deleteCaptainById(@PathVariable int id){
         return captainService.deleteCaptainById(id);
     }
-    @GetMapping(path = "/captains/{id}")
-    public Captain findCaptainById(@PathVariable int id) {
-        return captainService.getCaptainById(id);
-    }
+
     @GetMapping(path="/captains",params = "name")
     public List<Captain>findCaptainByName(@RequestParam String name){
         return captainService.findCaptainByName(name);
     }
+
+
+    @GetMapping(path = "/captains", params = "shipId")
+    public Optional<Captain> findCaptainByShipId(@RequestParam int shipId) {
+        return captainService.getCaptainByShipId(shipId);
+    }
+
 }

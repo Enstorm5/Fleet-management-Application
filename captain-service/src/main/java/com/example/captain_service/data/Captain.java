@@ -53,7 +53,6 @@ public class Captain {
         this.licenseNumber = licenseNumber;
     }
 
-
     public int getShipId() {
         return shipId;
     }

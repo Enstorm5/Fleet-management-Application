@@ -5,10 +5,10 @@ import com.example.crew_service.service.CrewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8005")
-
 public class CrewController {
     @Autowired
     private CrewService crewService;
@@ -33,10 +33,11 @@ public class CrewController {
     public List<Crew>findCrewByName(@RequestParam String name){
         return crewService.findCrewByName(name);
     }
-    @GetMapping(path = "/crews/{id}")
-    public Crew findCrewById(@PathVariable int id) {
-        return crewService.getCrewById(id);
+    @GetMapping(path = "/crews", params = "shipId")
+    public List<Crew> findCrewByShipId(@RequestParam int shipId) {
+        return crewService.findCrewByShipId(shipId);
     }
+
 
 
 

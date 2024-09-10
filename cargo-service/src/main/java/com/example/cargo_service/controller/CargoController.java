@@ -19,11 +19,6 @@ public class CargoController {
         return cargoService.getCargos();
     }
 
-    @GetMapping(path = "/cargos/{id}")
-    public Cargo findCargoById(@PathVariable int id) {
-        return cargoService.getCargoById(id);
-    }
-
     @PostMapping(path = "/cargos")
     public Cargo createCargo(@RequestBody Cargo cargo){
         return cargoService.createCargo(cargo);
@@ -36,6 +31,11 @@ public class CargoController {
     @DeleteMapping(path ="/cargos/{id}")
     public Cargo deleteCargoById(@PathVariable int id){
         return cargoService.deleteCargoById(id);
+    }
+
+    @GetMapping(path = "/cargos", params = "shipId")
+    public List<Cargo> findCargoByShipId(@RequestParam int shipId) {
+        return cargoService.findCargoByShipId(shipId);
     }
 
 

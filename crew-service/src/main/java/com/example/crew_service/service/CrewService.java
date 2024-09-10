@@ -33,12 +33,9 @@ public class CrewService {
     public List<Crew>findCrewByName(String name){
         return crewRepository.findCrewByName(name);
     }
-    public Crew getCrewById(int id) {
-        Optional<Crew> crew = crewRepository.findById(id);
-        if (crew.isPresent()) {
-            return crew.get();
-        }
-        return null;
+    public List<Crew> findCrewByShipId(int shipId) {
+        return crewRepository.findCrewByShipId(shipId);
     }
+
 
 }

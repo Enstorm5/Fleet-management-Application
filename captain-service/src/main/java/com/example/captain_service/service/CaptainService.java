@@ -34,12 +34,10 @@ public class CaptainService {
     public List<Captain>findCaptainByName(String name){
         return captainRepository.findCaptainByName(name);
     }
-    public Captain getCaptainById(int id) {
-        Optional<Captain> captain = captainRepository.findById(id);
-        if (captain.isPresent()) {
-            return captain.get();
-        }
-        return null;
+    public Optional<Captain> getCaptainByShipId(int shipId) {
+        return captainRepository.findCaptainByShipId(shipId);
     }
+
+
 
 }

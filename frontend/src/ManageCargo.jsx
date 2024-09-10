@@ -25,7 +25,7 @@ const ManageCargo = ({ open, onClose, onCargoChange }) => {
     description: '',
     weight: '',
     destination: '',
-    shipID: '',
+    shipId: '',
   });
   const [cargos, setCargos] = useState([]);
   const [selectedCargo, setSelectedCargo] = useState(null);
@@ -109,7 +109,7 @@ const ManageCargo = ({ open, onClose, onCargoChange }) => {
   };
 
   const resetForm = () => {
-    setFormData({ description: '', weight: '', destination: '', shipID: '' });
+    setFormData({ description: '', weight: '', destination: '', shipId: '' });
     setSelectedCargo(null);
     setIsEditing(false);
   };
@@ -149,7 +149,7 @@ const ManageCargo = ({ open, onClose, onCargoChange }) => {
                       <ListItem key={cargo.id} button onClick={() => handleCargoSelect(cargo)}>
                         <ListItemText
                           primary={cargo.description}
-                          secondary={`Weight: ${cargo.weight} KG | Destination: ${cargo.destination} | Ship ID: ${cargo.shipID}`}
+                          secondary={`Weight: ${cargo.weight} KG | Destination: ${cargo.destination} | Ship ID: ${cargo.shipId}`}
                         />
                         <ListItemSecondaryAction>
                           <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(cargo.id)}>
@@ -191,10 +191,10 @@ const ManageCargo = ({ open, onClose, onCargoChange }) => {
                       required
                     />
                     <TextField
-                      name="shipID"
+                      name="shipId"
                       label="Ship ID"
                       type="number"
-                      value={formData.shipID}
+                      value={formData.shipId}
                       onChange={handleChange}
                       fullWidth
                       required

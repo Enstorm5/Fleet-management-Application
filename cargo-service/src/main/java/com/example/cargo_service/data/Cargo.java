@@ -17,7 +17,7 @@ public class Cargo {
     @Column(name="destination")
     private String destination;
     @Column(name="ship_id")
-    private int shipID;
+    private int shipId;
 
     public int getId() {
         return id;
@@ -51,11 +51,11 @@ public class Cargo {
         this.destination = destination;
     }
 
-    public int getShipID() {
-        return shipID;
+    public int getShipId() {
+        return shipId;
     }
 
-    public void setShipID(int shipID) {
-        this.shipID = shipID;
+    public void setShipId(int shipId) {
+        this.shipId = shipId;
     }
 }

@@ -17,6 +17,7 @@ import {
   Tabs,
   CircularProgress,
   Box,
+  Divider,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
@@ -28,6 +29,7 @@ import {
 import ManageCrew from './ManageCrew';
 import ManageCargo from './ManageCargo';
 import ManageCaptain from './ManageCaptain';
+import ManageShip from './ManageShip';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -38,37 +40,52 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const [ships, setShips] = useState([]);
   const [crews, setCrews] = useState([]);
   const [cargos, setCargos] = useState([]);
   const [captains, setCaptains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isManageShipOpen, setIsManageShipOpen] = useState(false);
   const [isManageCrewOpen, setIsManageCrewOpen] = useState(false);
   const [isManageCargoOpen, setIsManageCargoOpen] = useState(false);
   const [isManageCaptainOpen, setIsManageCaptainOpen] = useState(false);
 
-  // Placeholder data for ships
-  const ships = [
-    { id: 1, name: 'Ship 1', status: 'Active', location: 'Port A' },
-    { id: 2, name: 'Ship 2', status: 'Maintenance', location: 'Port B' },
-  ];
-
-  const [selectedShip, setSelectedShip] = useState(ships[0]);
+  const [selectedShip, setSelectedShip] = useState(null);
+  const [selectedShipCrew, setSelectedShipCrew] = useState([]);
+  const [selectedShipCargo, setSelectedShipCargo] = useState([]);
+  const [selectedShipCaptain, setSelectedShipCaptain] = useState(null);
 
   useEffect(() => {
+    fetchShips();
     fetchCrews();
     fetchCargos();
     fetchCaptains();
   }, []);
 
+  useEffect(() => {
+    if (selectedShip) {
+      fetchShipDetails(selectedShip.id);
+    }
+  }, [selectedShip]);
+
+  const fetchShips = async () => {
+    try {
+      const response = await axios.get('http://localhost:8082/ship-service/ships');
+      setShips(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch ship data');
+      setLoading(false);
+    }
+  };
+
   const fetchCrews = async () => {
     try {
       const response = await axios.get('http://localhost:8081/crew-service/crews');
       setCrews(response.data);
-      setLoading(false);
     } catch (err) {
-      setError('Failed to fetch crew data');
-      setLoading(false);
+      console.error('Failed to fetch crew data', err);
     }
   };
 
@@ -76,10 +93,8 @@ const Dashboard = () => {
     try {
       const response = await axios.get('http://localhost:8083/cargo-service/cargos');
       setCargos(response.data);
-      setLoading(false);
     } catch (err) {
-      setError('Failed to fetch cargo data');
-      setLoading(false);
+      console.error('Failed to fetch cargo data', err);
     }
   };
 
@@ -87,10 +102,24 @@ const Dashboard = () => {
     try {
       const response = await axios.get('http://localhost:8084/captain-service/captains');
       setCaptains(response.data);
-      setLoading(false);
     } catch (err) {
-      setError('Failed to fetch captain data');
-      setLoading(false);
+      console.error('Failed to fetch captain data', err);
+    }
+  };
+
+  const fetchShipDetails = async (shipId) => {
+    try {
+      const [crewResponse, cargoResponse, captainResponse] = await Promise.all([
+        axios.get(`http://localhost:8081/crew-service/crews?shipId=${shipId}`),
+        axios.get(`http://localhost:8083/cargo-service/cargos?shipId=${shipId}`),
+        axios.get(`http://localhost:8084/captain-service/captains?shipId=${shipId}`)
+      ]);
+
+      setSelectedShipCrew(crewResponse.data);
+      setSelectedShipCargo(cargoResponse.data);
+      setSelectedShipCaptain(captainResponse.data); // Assuming one captain per ship
+    } catch (err) {
+      console.error('Failed to fetch ship details', err);
     }
   };
 
@@ -100,6 +129,14 @@ const Dashboard = () => {
 
   const handleShipSelect = (ship) => {
     setSelectedShip(ship);
+  };
+
+  const handleOpenManageShip = () => {
+    setIsManageShipOpen(true);
+  };
+
+  const handleCloseManageShip = () => {
+    setIsManageShipOpen(false);
   };
 
   const handleOpenManageCrew = () => {
@@ -126,16 +163,29 @@ const Dashboard = () => {
     setIsManageCaptainOpen(false);
   };
 
+  const handleShipChange = () => {
+    fetchShips();
+  };
+
   const handleCrewChange = () => {
     fetchCrews();
+    if (selectedShip) {
+      fetchShipDetails(selectedShip.id);
+    }
   };
 
   const handleCargoChange = () => {
     fetchCargos();
+    if (selectedShip) {
+      fetchShipDetails(selectedShip.id);
+    }
   };
 
   const handleCaptainChange = () => {
     fetchCaptains();
+    if (selectedShip) {
+      fetchShipDetails(selectedShip.id);
+    }
   };
 
   if (loading) {
@@ -191,7 +241,7 @@ const Dashboard = () => {
                     </ListItemAvatar>
                     <ListItemText
                       primary={ship.name}
-                      secondary={`Status: ${ship.status} | Location: ${ship.location}`}
+                      secondary={`Type: ${ship.type} | Status: ${ship.status} | Location: ${ship.location}`}
                     />
                   </ListItem>
                 ))}
@@ -209,8 +259,42 @@ const Dashboard = () => {
               {activeTab === 0 && selectedShip && (
                 <Box>
                   <Typography variant="h5">{selectedShip.name}</Typography>
+                  <Typography>Type: {selectedShip.type}</Typography>
                   <Typography>Status: {selectedShip.status}</Typography>
                   <Typography>Location: {selectedShip.location}</Typography>
+                  <Divider sx={{ my: 2 }} />
+                  <Typography variant="h6">Captain</Typography>
+                  {selectedShipCaptain ? (
+                    <Typography>{selectedShipCaptain.name} - License: {selectedShipCaptain.licenseNumber}</Typography>
+                  ) : (
+                    <Typography>No captain assigned</Typography>
+                  )}
+                  <Divider sx={{ my: 2 }} />
+                  <Typography variant="h6">Crew</Typography>
+                  {selectedShipCrew.length > 0 ? (
+                    <List>
+                      {selectedShipCrew.map((crewMember) => (
+                        <ListItem key={crewMember.id}>
+                          <ListItemText primary={crewMember.name} secondary={`Role: ${crewMember.role}`} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    <Typography>No crew assigned</Typography>
+                  )}
+                  <Divider sx={{ my: 2 }} />
+                  <Typography variant="h6">Cargo</Typography>
+                  {selectedShipCargo.length > 0 ? (
+                    <List>
+                      {selectedShipCargo.map((cargo) => (
+                        <ListItem key={cargo.id}>
+                          <ListItemText primary={cargo.description} secondary={`Weight: ${cargo.weight}, Destination: ${cargo.destination}`} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    <Typography>No cargo assigned</Typography>
+                  )}
                 </Box>
               )}
               {activeTab === 1 && (
@@ -241,7 +325,7 @@ const Dashboard = () => {
                       </ListItemAvatar>
                       <ListItemText
                         primary={cargo.description}
-                        secondary={`Weight: ${cargo.weight} | Destination: ${cargo.destination} | Ship ID: ${cargo.shipID}`}
+                        secondary={`Weight: ${cargo.weight} | Destination: ${cargo.destination} | Ship ID: ${cargo.shipId}`}
                       />
                     </ListItem>
                   ))}
@@ -272,25 +356,29 @@ const Dashboard = () => {
             variant="contained"
             color="primary"
             onClick={() => {
-              if (activeTab === 1) {
+              if (activeTab === 0) {
+                handleOpenManageShip();
+              } else if (activeTab === 1) {
                 handleOpenManageCrew();
               } else if (activeTab === 2) {
                 handleOpenManageCargo();
               } else if (activeTab === 3) {
                 handleOpenManageCaptain();
-              } else {
-                // Handle other tabs' actions
-                console.log("Action for tab:", activeTab);
               }
             }}
           >
-            {activeTab === 0 && "Add/Edit Ship"}
+            {activeTab === 0 && "Manage Ships"}
             {activeTab === 1 && "Manage Crew"}
             {activeTab === 2 && "Manage Cargo"}
             {activeTab === 3 && "Manage Captain"}
           </Button>
         </Box>
       </Container>
+      <ManageShip
+        open={isManageShipOpen}
+        onClose={handleCloseManageShip}
+        onShipChange={handleShipChange}
+      />
       <ManageCrew
         open={isManageCrewOpen}
         onClose={handleCloseManageCrew}
