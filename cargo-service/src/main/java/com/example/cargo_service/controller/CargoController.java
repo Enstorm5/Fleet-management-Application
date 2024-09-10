@@ -19,6 +19,11 @@ public class CargoController {
         return cargoService.getCargos();
     }
 
+    @GetMapping(path = "/cargos/{id}")
+    public Cargo findCargoById(@PathVariable int id) {
+        return cargoService.getCargoById(id);
+    }
+
     @PostMapping(path = "/cargos")
     public Cargo createCargo(@RequestBody Cargo cargo){
         return cargoService.createCargo(cargo);

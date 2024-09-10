@@ -27,6 +27,7 @@ import {
 } from '@mui/icons-material';
 import ManageCrew from './ManageCrew';
 import ManageCargo from './ManageCargo';
+import ManageCaptain from './ManageCaptain';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -39,19 +40,17 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [crews, setCrews] = useState([]);
   const [cargos, setCargos] = useState([]);
+  const [captains, setCaptains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isManageCrewOpen, setIsManageCrewOpen] = useState(false);
   const [isManageCargoOpen, setIsManageCargoOpen] = useState(false);
+  const [isManageCaptainOpen, setIsManageCaptainOpen] = useState(false);
 
-  // Placeholder data for ships and captains
+  // Placeholder data for ships
   const ships = [
     { id: 1, name: 'Ship 1', status: 'Active', location: 'Port A' },
     { id: 2, name: 'Ship 2', status: 'Maintenance', location: 'Port B' },
-  ];
-  const captains = [
-    { id: 1, name: 'Captain 1', experience: 10, ship_id: 1 },
-    { id: 2, name: 'Captain 2', experience: 15, ship_id: 2 },
   ];
 
   const [selectedShip, setSelectedShip] = useState(ships[0]);
@@ -59,6 +58,7 @@ const Dashboard = () => {
   useEffect(() => {
     fetchCrews();
     fetchCargos();
+    fetchCaptains();
   }, []);
 
   const fetchCrews = async () => {
@@ -79,6 +79,17 @@ const Dashboard = () => {
       setLoading(false);
     } catch (err) {
       setError('Failed to fetch cargo data');
+      setLoading(false);
+    }
+  };
+
+  const fetchCaptains = async () => {
+    try {
+      const response = await axios.get('http://localhost:8084/captain-service/captains');
+      setCaptains(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch captain data');
       setLoading(false);
     }
   };
@@ -107,12 +118,24 @@ const Dashboard = () => {
     setIsManageCargoOpen(false);
   };
 
+  const handleOpenManageCaptain = () => {
+    setIsManageCaptainOpen(true);
+  };
+
+  const handleCloseManageCaptain = () => {
+    setIsManageCaptainOpen(false);
+  };
+
   const handleCrewChange = () => {
     fetchCrews();
   };
 
   const handleCargoChange = () => {
     fetchCargos();
+  };
+
+  const handleCaptainChange = () => {
+    fetchCaptains();
   };
 
   if (loading) {
@@ -181,7 +204,7 @@ const Dashboard = () => {
                 {activeTab === 0 && "Ship Details"}
                 {activeTab === 1 && "Crew Overview"}
                 {activeTab === 2 && "Cargo Overview"}
-                {activeTab === 3 && "Captain Assignment"}
+                {activeTab === 3 && "Captain Overview"}
               </Typography>
               {activeTab === 0 && selectedShip && (
                 <Box>
@@ -233,7 +256,10 @@ const Dashboard = () => {
                           <CaptainIcon />
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary={captain.name} secondary={`Experience: ${captain.experience} years`} />
+                      <ListItemText
+                        primary={captain.name}
+                        secondary={`License: ${captain.licenseNumber} | Experience: ${captain.experience} years | Ship ID: ${captain.shipId}`}
+                      />
                     </ListItem>
                   ))}
                 </List>
@@ -250,6 +276,8 @@ const Dashboard = () => {
                 handleOpenManageCrew();
               } else if (activeTab === 2) {
                 handleOpenManageCargo();
+              } else if (activeTab === 3) {
+                handleOpenManageCaptain();
               } else {
                 // Handle other tabs' actions
                 console.log("Action for tab:", activeTab);
@@ -259,7 +287,7 @@ const Dashboard = () => {
             {activeTab === 0 && "Add/Edit Ship"}
             {activeTab === 1 && "Manage Crew"}
             {activeTab === 2 && "Manage Cargo"}
-            {activeTab === 3 && "Assign Captain"}
+            {activeTab === 3 && "Manage Captain"}
           </Button>
         </Box>
       </Container>
@@ -272,6 +300,11 @@ const Dashboard = () => {
         open={isManageCargoOpen}
         onClose={handleCloseManageCargo}
         onCargoChange={handleCargoChange}
+      />
+      <ManageCaptain
+        open={isManageCaptainOpen}
+        onClose={handleCloseManageCaptain}
+        onCaptainChange={handleCaptainChange}
       />
     </>
   );

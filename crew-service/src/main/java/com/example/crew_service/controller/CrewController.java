@@ -33,6 +33,10 @@ public class CrewController {
     public List<Crew>findCrewByName(@RequestParam String name){
         return crewService.findCrewByName(name);
     }
+    @GetMapping(path = "/crews/{id}")
+    public Crew findCrewById(@PathVariable int id) {
+        return crewService.getCrewById(id);
+    }
 
 
 

@@ -30,5 +30,12 @@ public class CargoService {
         }
         return null;
     }
+    public Cargo getCargoById(int id) {
+        Optional<Cargo> cargo = cargoRepository.findById(id);
+        if (cargo.isPresent()) {
+            return cargo.get();
+        }
+        return null;
+    }
 
 }
