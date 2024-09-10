@@ -26,6 +26,7 @@ import {
   Stars as CaptainIcon,
 } from '@mui/icons-material';
 import ManageCrew from './ManageCrew';
+import ManageCargo from './ManageCargo';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -37,18 +38,16 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [crews, setCrews] = useState([]);
+  const [cargos, setCargos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isManageCrewOpen, setIsManageCrewOpen] = useState(false);
+  const [isManageCargoOpen, setIsManageCargoOpen] = useState(false);
 
-  // Placeholder data for ships, cargo, and captains
+  // Placeholder data for ships and captains
   const ships = [
     { id: 1, name: 'Ship 1', status: 'Active', location: 'Port A' },
     { id: 2, name: 'Ship 2', status: 'Maintenance', location: 'Port B' },
-  ];
-  const cargos = [
-    { id: 1, name: 'Cargo 1', weight: '1000 tons', ship_id: 1 },
-    { id: 2, name: 'Cargo 2', weight: '1500 tons', ship_id: 2 },
   ];
   const captains = [
     { id: 1, name: 'Captain 1', experience: 10, ship_id: 1 },
@@ -59,15 +58,27 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchCrews();
+    fetchCargos();
   }, []);
 
   const fetchCrews = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/fleet-management/crews');
+      const response = await axios.get('http://localhost:8081/crew-service/crews');
       setCrews(response.data);
       setLoading(false);
     } catch (err) {
       setError('Failed to fetch crew data');
+      setLoading(false);
+    }
+  };
+
+  const fetchCargos = async () => {
+    try {
+      const response = await axios.get('http://localhost:8083/cargo-service/cargos');
+      setCargos(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch cargo data');
       setLoading(false);
     }
   };
@@ -88,8 +99,20 @@ const Dashboard = () => {
     setIsManageCrewOpen(false);
   };
 
+  const handleOpenManageCargo = () => {
+    setIsManageCargoOpen(true);
+  };
+
+  const handleCloseManageCargo = () => {
+    setIsManageCargoOpen(false);
+  };
+
   const handleCrewChange = () => {
     fetchCrews();
+  };
+
+  const handleCargoChange = () => {
+    fetchCargos();
   };
 
   if (loading) {
@@ -178,7 +201,7 @@ const Dashboard = () => {
                       </ListItemAvatar>
                       <ListItemText
                         primary={crew.name}
-                        secondary={`Role: ${crew.role} | Ship ID: ${crew.ship_id} | Crew ID: ${crew.id}`}
+                        secondary={`Role: ${crew.role} | Ship ID: ${crew.shipId} | Crew ID: ${crew.id}`}
                       />
                     </ListItem>
                   ))}
@@ -193,7 +216,10 @@ const Dashboard = () => {
                           <CargoIcon />
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary={cargo.name} secondary={`Weight: ${cargo.weight}`} />
+                      <ListItemText
+                        primary={cargo.description}
+                        secondary={`Weight: ${cargo.weight} | Destination: ${cargo.destination} | Ship ID: ${cargo.shipID}`}
+                      />
                     </ListItem>
                   ))}
                 </List>
@@ -222,6 +248,8 @@ const Dashboard = () => {
             onClick={() => {
               if (activeTab === 1) {
                 handleOpenManageCrew();
+              } else if (activeTab === 2) {
+                handleOpenManageCargo();
               } else {
                 // Handle other tabs' actions
                 console.log("Action for tab:", activeTab);
@@ -230,7 +258,7 @@ const Dashboard = () => {
           >
             {activeTab === 0 && "Add/Edit Ship"}
             {activeTab === 1 && "Manage Crew"}
-            {activeTab === 2 && "Add/Edit Cargo"}
+            {activeTab === 2 && "Manage Cargo"}
             {activeTab === 3 && "Assign Captain"}
           </Button>
         </Box>
@@ -239,6 +267,11 @@ const Dashboard = () => {
         open={isManageCrewOpen}
         onClose={handleCloseManageCrew}
         onCrewChange={handleCrewChange}
+      />
+      <ManageCargo
+        open={isManageCargoOpen}
+        onClose={handleCloseManageCargo}
+        onCargoChange={handleCargoChange}
       />
     </>
   );

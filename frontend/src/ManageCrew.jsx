@@ -30,7 +30,7 @@ const ManageCrew = ({ open, onClose, onCrewChange }) => {
   const [formData, setFormData] = useState({
     name: '',
     role: '',
-    ship_id: '',
+    shipId: '',
   });
   const [crews, setCrews] = useState([]);
   const [selectedCrew, setSelectedCrew] = useState(null);
@@ -51,7 +51,7 @@ const ManageCrew = ({ open, onClose, onCrewChange }) => {
   const fetchCrews = async (name = '') => {
     setLoading(true);
     try {
-      let url = 'http://localhost:8081/fleet-management/crews';
+      let url = 'http://localhost:8081/crew-service/crews';
       if (name) {
         url += `?name=${encodeURIComponent(name)}`;
       }
@@ -79,10 +79,10 @@ const ManageCrew = ({ open, onClose, onCrewChange }) => {
     setLoading(true);
     try {
       if (isEditing && selectedCrew) {
-        await axios.put(`http://localhost:8081/fleet-management/crews`, { ...formData, id: selectedCrew.id });
+        await axios.put(`http://localhost:8081/crew-service/crews`, { ...formData, id: selectedCrew.id });
         showAlert('Crew member updated successfully', 'success');
       } else {
-        await axios.post('http://localhost:8081/fleet-management/crews', formData);
+        await axios.post('http://localhost:8081/crew-service/crews', formData);
         showAlert('Crew member added successfully', 'success');
       }
       resetForm();
@@ -100,7 +100,7 @@ const ManageCrew = ({ open, onClose, onCrewChange }) => {
   const handleDelete = async (crewId) => {
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:8081/fleet-management/crews/${crewId}`);
+      await axios.delete(`http://localhost:8081/crew-service/crews/${crewId}`);
       showAlert('Crew member deleted successfully', 'success');
       await fetchCrews(searchTerm);
       onCrewChange();
@@ -119,7 +119,7 @@ const ManageCrew = ({ open, onClose, onCrewChange }) => {
   };
 
   const resetForm = () => {
-    setFormData({ name: '', role: '', ship_id: '' });
+    setFormData({ name: '', role: '', shipId: '' });
     setSelectedCrew(null);
     setIsEditing(false);
   };
@@ -180,7 +180,7 @@ const ManageCrew = ({ open, onClose, onCrewChange }) => {
                     <List>
                       {crews.map((crew) => (
                         <ListItem key={crew.id} button onClick={() => handleCrewSelect(crew)}>
-                          <ListItemText primary={crew.name} secondary={`Role: ${crew.role} | Ship ID: ${crew.ship_id} | Crew ID: ${crew.id}`} />
+                          <ListItemText primary={crew.name} secondary={`Role: ${crew.role} | Ship ID: ${crew.shipId} | Crew ID: ${crew.id}`} />
                           <ListItemSecondaryAction>
                             <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(crew.id)}>
                               <DeleteIcon />
@@ -219,10 +219,10 @@ const ManageCrew = ({ open, onClose, onCrewChange }) => {
                         </Select>
                       </FormControl>
                       <TextField
-                        name="ship_id"
+                        name="shipId"
                         label="Ship ID"
                         type="number"
-                        value={formData.ship_id}
+                        value={formData.shipId}
                         onChange={handleChange}
                         fullWidth
                         required

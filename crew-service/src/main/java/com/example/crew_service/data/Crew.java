@@ -9,13 +9,13 @@ public class Crew {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    int id;
+    private int id;
     @Column(name="name")
-    String name;
+    private String name;
     @Column(name="role")
-    String role;
+    private String role;
     @Column(name="ship_id")
-    int ship_id;
+    private int shipId;
 
     public int getId() {
         return id;
@@ -33,6 +33,14 @@ public class Crew {
         this.name = name;
     }
 
+    public int getShipId() {
+        return shipId;
+    }
+
+    public void setShipId(int shipId) {
+        this.shipId = shipId;
+    }
+
     public String getRole() {
         return role;
     }
@@ -41,11 +49,5 @@ public class Crew {
         this.role = role;
     }
 
-    public int getShip_id() {
-        return ship_id;
-    }
 
-    public void setShip_id(int ship_id) {
-        this.ship_id = ship_id;
-    }
 }

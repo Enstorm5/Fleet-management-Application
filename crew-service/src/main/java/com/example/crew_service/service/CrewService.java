@@ -13,10 +13,10 @@ public class CrewService {
     @Autowired
     private CrewRepository crewRepository;
 
-    public List<Crew> getCrew(){
+    public List<Crew> getCrews(){
         return crewRepository.findAll();
     }
-    public Crew createcrew(Crew crew){
+    public Crew createCrew(Crew crew){
         return crewRepository.save(crew);
     }
     public Crew updateCrew(Crew crew){

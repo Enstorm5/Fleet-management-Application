@@ -15,11 +15,11 @@ public class CrewController {
 
     @GetMapping(path ="/crews")
     public List<Crew>findAllCrews(){
-        return crewService.getCrew();
+        return crewService.getCrews();
     }
     @PostMapping(path="/crews")
     public Crew createCrew(@RequestBody Crew crew){
-        return crewService.createcrew(crew);
+        return crewService.createCrew(crew);
     }
     @PutMapping(path="/crews")
     public Crew updateCrew(@RequestBody Crew crew) {
