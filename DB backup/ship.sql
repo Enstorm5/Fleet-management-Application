@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 10, 2024 at 08:45 AM
+-- Generation Time: Sep 10, 2024 at 03:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -40,11 +40,10 @@ CREATE TABLE `ship` (
 --
 
 INSERT INTO `ship` (`id`, `name`, `type`, `status`, `location`) VALUES
-(1, 'Ocean Explorer', 'Cargo', 'Active', 'Port of Singapore'),
-(2, 'Sea Voyager', 'Passenger', 'Maintenance', 'Port of Los Angeles'),
+(1, 'Ocean Explorer 2', 'Cargo', 'Active', 'Port of Singapore'),
+(2, 'Sea Voyager', 'Cargo', 'Active', 'Port of Los Angeles'),
 (3, 'Marine Discoverer', 'Research', 'Active', 'Port of Rotterdam'),
-(4, 'Pacific Trader', 'Cargo', 'Active', 'Port of Dubai'),
-(5, 'Atlantic Spirit', 'Passenger', 'Active', 'Port of Shanghai');
+(4, 'Pacific Trader', 'Cargo', 'Active', 'Port of Dubai');
 
 --
 -- Indexes for dumped tables
@@ -64,7 +63,7 @@ ALTER TABLE `ship`
 -- AUTO_INCREMENT for table `ship`
 --
 ALTER TABLE `ship`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

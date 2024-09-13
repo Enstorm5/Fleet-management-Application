@@ -87,8 +87,8 @@ const ManageCaptain = ({ open, onClose, onCaptainChange }) => {
       onCaptainChange();
     } catch (error) {
       console.error('Error managing captain:', error);
-      setError('Failed to save captain');
-      showAlert('Failed to save captain', 'error');
+      setError('Failed to save captain,License number and assigned ship must be unique');
+      showAlert('Failed to save captain,License number and assigned ship must be unique', 'error');
     } finally {
       setLoading(false);
     }

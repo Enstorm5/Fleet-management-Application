@@ -241,7 +241,7 @@ const Dashboard = () => {
                     </ListItemAvatar>
                     <ListItemText
                       primary={ship.name}
-                      secondary={`Type: ${ship.type} | Status: ${ship.status} | Location: ${ship.location}`}
+                      secondary={`Type: ${ship.type} | Status: ${ship.status} | Location: ${ship.location} | Ship ID: ${ship.id}`}
                     />
                   </ListItem>
                 ))}
@@ -288,7 +288,7 @@ const Dashboard = () => {
                     <List>
                       {selectedShipCargo.map((cargo) => (
                         <ListItem key={cargo.id}>
-                          <ListItemText primary={cargo.description} secondary={`Weight: ${cargo.weight}, Destination: ${cargo.destination}`} />
+                          <ListItemText primary={cargo.description} secondary={`Weight: ${cargo.weight} KG, Destination: ${cargo.destination}`} />
                         </ListItem>
                       ))}
                     </List>
